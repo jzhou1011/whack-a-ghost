@@ -20,30 +20,30 @@ var alertBgImg = new Image();
 var alertBg;
 /* Score */
 var score;
-/* Worms */
-var wormImg = new Image(); 
-var worm; 
-var lastWorm;
+/* ghosts */
+var ghostImg = new Image(); 
+var ghost; 
+var lastghost;
 var randomPos;
 
-var wormsX = [280, 620, 430, 680, 250, 530, 800]; 
-var wormsY = [160, 140, 240, 300, 360, 410, 470];
+var ghostsX = [280, 620, 430, 680, 250, 530, 800]; 
+var ghostsY = [160, 140, 240, 300, 360, 410, 470];
 
 var centerX = 500; 
 var centerY = 230; 
 var gfxLoaded = 0; //used as a preloader 
   
 var timerSource; 
-var currentWorms = 0; //worms already shown 
-var wormsHit = 0; 
-var totalWorms = 10; //total of worms to display
+var currentGhosts = 0; //ghosts already shown 
+var ghostsHit = 0; 
+var totalGhosts = 10; //total of ghosts to display
 
 var curTween;
 
 function Main() 
 { 
     //link canvas
-    canvas = document.getElementById('WhackAWorm'); 
+    canvas = document.getElementById('WhackAGhost'); 
     stage = new createjs.Stage(canvas);
     stage.mouseEventsEnabled = true;
     /* Load GFX */
@@ -67,15 +67,15 @@ function Main()
     alertBgImg.name = 'alertBg'; 
     alertBgImg.onload = loadGfx; 
 
-    wormImg.src = 'ghost.png'; 
-    wormImg.name = 'worm'; 
-    wormImg.onload = loadGfx;
+    ghostImg.src = 'ghost.png'; 
+    ghostImg.name = 'ghost'; 
+    ghostImg.onload = loadGfx;
 
     /* Ticker */
     createjs.Ticker.framerate = 30; 
     createjs.Ticker.on("tick", stage);
 
-    score = new createjs.Text('0' + '/' + totalWorms, 'bold 30px Arial', "black"); 
+    score = new createjs.Text('0' + '/' + totalGhosts, 'bold 30px Arial', "black"); 
     score.maxWidth = 1000;    //fix for Chrome 17 
     score.x = 58; 
     score.y = 21; 
@@ -90,7 +90,7 @@ function loadGfx(e)
     if(e.target.name = 'gameBg'){gameBg = new createjs.Bitmap(gameBgImg);} 
     if(e.target.name = 'playBtn'){playBtn = new createjs.Bitmap(playBtnImg);} 
     if(e.target.name = 'alertBg'){alertBg = new createjs.Bitmap(alertBgImg);} 
-    if(e.target.name = 'worm'){alertBg = new createjs.Bitmap(wormImg);} 
+    if(e.target.name = 'ghost'){alertBg = new createjs.Bitmap(ghostImg);} 
       
     gfxLoaded++; 
     if(gfxLoaded == 5) 
@@ -136,53 +136,53 @@ function showGameView()
             startButtonListeners('rmv');  
             stage.removeChild(titleView);  
             titleView = null;  
-            showWorm(); 
+            showghost(); 
         } 
     ); 
 }
 
-function showWorm() 
+function showghost() 
 { 
-    if(currentWorms == totalWorms) 
+    if(currentGhosts == totalGhosts) 
     { 
         showAlert(); 
     }
     else
     {   
-        if(lastWorm != null) 
+        if(lastghost != null) 
         { 
-            lastWorm.removeEventListener("click", wormHit); 
-            stage.removeChild(lastWorm); 
+            lastghost.removeEventListener("click", ghostHit); 
+            stage.removeChild(lastghost); 
             stage.update(); 
-            lastWorm = null; 
+            lastghost = null; 
         }
         randomPos = Math.floor(Math.random() * 7);
-        var worm = new createjs.Bitmap(wormImg); 
+        var ghost = new createjs.Bitmap(ghostImg); 
         
-        worm.x = wormsX[randomPos]-35; 
-        worm.y = wormsY[randomPos]-130; 
-        stage.addChild(worm); 
-        worm.addEventListener("click",wormHit); 
+        ghost.x = ghostsX[randomPos]-35; 
+        ghost.y = ghostsY[randomPos]-130; 
+        stage.addChild(ghost); 
+        ghost.addEventListener("click",ghostHit); 
         
-        lastWorm = worm;
-        lastWorm.scaleY = 0.3; 
-        lastWorm.y += 42; 
+        lastghost = ghost;
+        lastghost.scaleY = 0.3; 
+        lastghost.y += 42; 
         stage.update();
-        console.log(currentWorms);
-        console.log(lastWorm.y);
+        console.log(currentGhosts);
+        console.log(lastghost.y);
         
-        createjs.Tween.get(lastWorm, {override:true}).to({scaleY: 1, y: wormsY[randomPos]-130}, 100).wait(1000).call(function(){currentWorms++; showWorm()});
+        createjs.Tween.get(lastghost, {override:true}).to({scaleY: 1, y: ghostsY[randomPos]-130}, 100).wait(1000).call(function(){currentGhosts++; showghost()});
     }
 }
 
-function wormHit() 
+function ghostHit() 
 { 
-    wormsHit++; 
-    score.text = wormsHit + '/' + totalWorms; 
+    ghostsHit++; 
+    score.text = ghostsHit + '/' + totalGhosts; 
 
-    lastWorm.removeEventListener("click", wormHit);
-    stage.removeChild(lastWorm);
-    lastWorm = null; 
+    lastghost.removeEventListener("click", ghostHit);
+    stage.removeChild(lastghost);
+    lastghost = null; 
     stage.update(); 
 }
 
@@ -195,7 +195,7 @@ function showAlert()
     createjs.Tween.get(alertBg,).to({y:centerY - 80}, 200).call(function() 
     { 
         createjs.Ticker.removeAllEventListeners(); 
-        var score = new createjs.Text(wormsHit + '/' + totalWorms, 'bold 20px Arial', '#EEE'); 
+        var score = new createjs.Text(ghostsHit + '/' + totalGhosts, 'bold 20px Arial', '#EEE'); 
         score.maxWidth = 1000;    //fix for Chrome 17 
         score.x = 220; 
         score.y = 205; 
