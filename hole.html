@@ -5,7 +5,11 @@
         <style>
         *{-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
         .canvas {
-            cursor: url(hammer2.png) 20 20,auto;
+            cursor: url(hammerUP.png) 20 20,auto;
+            /* Change the hotspot - cursor: url(crosshair.cur) 0 0, default; */
+        }
+        .canvas:active {
+            cursor: url(hammerDOWN.png) 20 20,auto;
             /* Change the hotspot - cursor: url(crosshair.cur) 0 0, default; */
         }
         </style> 
