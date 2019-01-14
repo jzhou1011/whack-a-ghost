@@ -21,13 +21,26 @@ var alertBg;
 /* Score */
 var score;
 /* ghosts */
-var ghostImg = new Image(); 
+var ghostImgArr = new Array(19); 
+var i;
+for(i=0;i<19;i++){
+    ghostImgArr[i] = new Image();
+}
+ghostImgName = ['image/ghost1.png','image/ghost2.png','image/ghost3.png',
+'image/ghost4.png','image/ghost5.png','image/ghost6.png','image/ghost7.png',
+'image/ghost8.png','image/ghost9.png','image/ghost10.png','image/ghost11.png',
+'image/ghost12.png','image/ghost13.png','image/ghost14.png','image/ghost15.png',
+'image/ghost16.png','image/ghost17.png','image/ghost18.png','image/ghost19.png']
 var ghost; 
-var lastghost;
+var lastGhost;
 var randomPos;
+var randomGhostPos;
 
-var ghostsX = [280, 620, 430, 680, 250, 530, 800]; 
-var ghostsY = [160, 140, 240, 300, 360, 410, 470];
+var ghostsX = [280, 620, 430, 675, 260, 530, 800]; 
+var ghostsY = [170, 150, 260, 315, 385, 450, 480];
+//                  0   1   2   3   4   5   6   7   8  9   10  11  12   13  14  15  16  17  18
+var ghostCoorX = [ 35, 20, 20, 30, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40,  0, 60, 30, 30];
+var ghostCoorY = [150, 35, 85, 90, 90,100, 80, 65,100, 95,120, 75,150, 80,200,  0, 90,340,105];
 
 var centerX = 500; 
 var centerY = 230; 
@@ -47,15 +60,15 @@ function Main()
     stage = new createjs.Stage(canvas);
     stage.mouseEventsEnabled = true;
     /* Load GFX */
-    titleBgImg.src = 'titleBg.png'; 
+    titleBgImg.src = 'image/titleBg.png'; 
     titleBgImg.name = 'titleBg'; 
     titleBgImg.onload = loadGfx; 
 
-    gameBgImg.src = 'gameBg.png'; 
+    gameBgImg.src = 'image/gameBg.png'; 
     gameBgImg.name = 'gameBg'; 
     gameBgImg.onload = loadGfx; 
 
-    playBtnImg.src = 'ghost.png'; 
+    playBtnImg.src = 'image/ghost1.png'; 
     playBtnImg.name = 'playBtn'; 
     playBtnImg.onload = loadGfx; 
 
@@ -63,14 +76,20 @@ function Main()
     // creditsViewImg.name = 'credits'; 
     // creditsViewImg.onload = loadGfx; 
 
-    alertBgImg.src = 'alertBg.png'; 
+    alertBgImg.src = 'image/ghost1.png'; 
     alertBgImg.name = 'alertBg'; 
     alertBgImg.onload = loadGfx; 
 
-    ghostImg.src = 'ghost.png'; 
-    ghostImg.name = 'ghost'; 
-    ghostImg.onload = loadGfx;
+    for(i=0;i<19;i++){
+        ghostImgArr[i].src = ghostImgName[i];
+        ghostImgArr[i].name = i;
+        ghostImgArr[i].onload = loadGfx;
+    }
+    // ghostImg.src = 'image/ghost.png'; 
+    // ghostImg.name = 'ghost'; 
+    // ghostImg.onload = loadGfx;
 
+    
     /* Ticker */
     createjs.Ticker.framerate = 30; 
     createjs.Ticker.on("tick", stage);
@@ -89,11 +108,13 @@ function loadGfx(e)
     if(e.target.name = 'titleBg'){titleBg = new createjs.Bitmap(titleBgImg);} 
     if(e.target.name = 'gameBg'){gameBg = new createjs.Bitmap(gameBgImg);} 
     if(e.target.name = 'playBtn'){playBtn = new createjs.Bitmap(playBtnImg);} 
-    if(e.target.name = 'alertBg'){alertBg = new createjs.Bitmap(alertBgImg);} 
-    if(e.target.name = 'ghost'){alertBg = new createjs.Bitmap(ghostImg);} 
+    if(e.target.name = 'alertBg'){alertBg = new createjs.Bitmap(alertBgImg);}
+    for(i=1;i<20;i++){
+        if(e.target.name = i){ghostBg = new createjs.Bitmap(ghostImgArr[i]);} 
+    }
       
     gfxLoaded++; 
-    if(gfxLoaded == 5) 
+    if(gfxLoaded == 23) 
     { 
         console.log("gfxloaded.");
         addTitleView(); 
@@ -136,12 +157,12 @@ function showGameView()
             startButtonListeners('rmv');  
             stage.removeChild(titleView);  
             titleView = null;  
-            showghost(); 
+            showGhost(); 
         } 
     ); 
 }
 
-function showghost() 
+function showGhost() 
 { 
     if(currentGhosts == totalGhosts) 
     { 
@@ -149,29 +170,31 @@ function showghost()
     }
     else
     {   
-        if(lastghost != null) 
+        if(lastGhost != null) 
         { 
-            lastghost.removeEventListener("click", ghostHit); 
-            stage.removeChild(lastghost); 
+            lastGhost.removeEventListener("click", ghostHit); 
+            stage.removeChild(lastGhost); 
             stage.update(); 
-            lastghost = null; 
+            lastGhost = null; 
         }
         randomPos = Math.floor(Math.random() * 7);
-        var ghost = new createjs.Bitmap(ghostImg); 
+        randomGhostPos = Math.floor(Math.random() * 19);
+        //randomGhostPos=18;
+        var ghost = new createjs.Bitmap(ghostImgArr[randomGhostPos]); 
         
-        ghost.x = ghostsX[randomPos]-35; 
-        ghost.y = ghostsY[randomPos]-130; 
+        ghost.x = ghostsX[randomPos]-ghostCoorX[randomGhostPos]; 
+        ghost.y = ghostsY[randomPos]-ghostCoorY[randomGhostPos]; 
         stage.addChild(ghost); 
         ghost.addEventListener("click",ghostHit); 
-        
-        lastghost = ghost;
-        lastghost.scaleY = 0.3; 
-        lastghost.y += 42; 
+        console.log(ghost.x);
+        console.log(ghost.y);
+
+        lastGhost = ghost;
+        lastGhost.scaleY = 0.3; 
+        lastGhost.y += 42; 
         stage.update();
-        console.log(currentGhosts);
-        console.log(lastghost.y);
         
-        createjs.Tween.get(lastghost, {override:true}).to({scaleY: 1, y: ghostsY[randomPos]-130}, 100).wait(1000).call(function(){currentGhosts++; showghost()});
+        createjs.Tween.get(lastGhost, {override:true}).to({scaleY: 1, y: ghostsY[randomPos]-ghostCoorY[randomGhostPos]}, 50).wait(1000).call(function(){currentGhosts++; showGhost()});
     }
 }
 
@@ -180,25 +203,25 @@ function ghostHit()
     ghostsHit++; 
     score.text = ghostsHit + '/' + totalGhosts; 
 
-    lastghost.removeEventListener("click", ghostHit);
-    stage.removeChild(lastghost);
-    lastghost = null; 
+    lastGhost.removeEventListener("click", ghostHit);
+    stage.removeChild(lastGhost);
+    lastGhost = null; 
     stage.update(); 
 }
 
 function showAlert() 
 { 
-    alertBg.x = centerX - 120; 
-    alertBg.y = -80; 
+    alertBg.x = centerX - 240; 
+    alertBg.y = -80;
     stage.addChild(alertBg); 
       
-    createjs.Tween.get(alertBg,).to({y:centerY - 80}, 200).call(function() 
+    createjs.Tween.get(alertBg,{override:true}).to({y:centerY - 120}, 200).call(function() 
     { 
         createjs.Ticker.removeAllEventListeners(); 
-        var score = new createjs.Text(ghostsHit + '/' + totalGhosts, 'bold 20px Arial', '#EEE'); 
+        var score = new createjs.Text(ghostsHit + '/' + totalGhosts, 'bold 30px Arial', '#EEE'); 
         score.maxWidth = 1000;    //fix for Chrome 17 
-        score.x = 220; 
-        score.y = 205; 
+        score.x = centerX; 
+        score.y = centerY; 
         stage.addChild(score); 
         stage.update(); 
     }); 
