@@ -49,7 +49,7 @@ var gfxLoaded = 0; //used as a preloader
 var timerSource; 
 var currentGhosts = 0; //ghosts already shown 
 var ghostsHit = 0; 
-var totalGhosts = 10; //total of ghosts to display
+var totalGhosts = 100; //total of ghosts to display
 
 var curTween;
 
