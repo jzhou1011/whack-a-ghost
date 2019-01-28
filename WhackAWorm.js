@@ -35,6 +35,11 @@ var ghost;
 var lastGhost;
 var randomPos;
 var randomGhostPos;
+/*end*/
+var restartBtn;
+var restartBtnImg = new Image();
+var end;
+var endBgImg = new Image();
 
 var ghostsX = [280, 620, 430, 675, 260, 530, 800]; 
 var ghostsY = [170, 150, 260, 315, 385, 450, 480];
@@ -49,7 +54,7 @@ var gfxLoaded = 0; //used as a preloader
 var timerSource; 
 var currentGhosts = 0; //ghosts already shown 
 var ghostsHit = 0; 
-var totalGhosts = 100; //total of ghosts to display
+var totalGhosts = 10; //total of ghosts to display
 
 var curTween;
 
@@ -70,15 +75,19 @@ function Main()
 
     playBtnImg.src = 'image/ghost1.png'; 
     playBtnImg.name = 'playBtn'; 
-    playBtnImg.onload = loadGfx; 
+    playBtnImg.onload = loadGfx;
+    
+    restartBtnImg.src = 'image/restartBtn.png'; 
+    restartBtnImg.name = 'restartBtn'; 
+    restartBtnImg.onload = loadGfx;
 
     // creditsViewImg.src = 'creditsView.png'; 
     // creditsViewImg.name = 'credits'; 
     // creditsViewImg.onload = loadGfx; 
 
-    alertBgImg.src = 'image/ghost1.png'; 
-    alertBgImg.name = 'alertBg'; 
-    alertBgImg.onload = loadGfx; 
+    endBgImg.src = 'image/end.png'; 
+    endBgImg.name = 'end'; 
+    endBgImg.onload = loadGfx; 
 
     for(i=0;i<19;i++){
         ghostImgArr[i].src = ghostImgName[i];
@@ -108,13 +117,14 @@ function loadGfx(e)
     if(e.target.name = 'titleBg'){titleBg = new createjs.Bitmap(titleBgImg);} 
     if(e.target.name = 'gameBg'){gameBg = new createjs.Bitmap(gameBgImg);} 
     if(e.target.name = 'playBtn'){playBtn = new createjs.Bitmap(playBtnImg);} 
-    if(e.target.name = 'alertBg'){alertBg = new createjs.Bitmap(alertBgImg);}
-    for(i=1;i<20;i++){
+    if(e.target.name = 'restartBtn'){restartBtn = new createjs.Bitmap(restartBtnImg);}
+    if(e.target.name = 'end'){end = new createjs.Bitmap(endBgImg);}
+    for(i=0;i<19;i++){
         if(e.target.name = i){ghostBg = new createjs.Bitmap(ghostImgArr[i]);} 
     }
       
     gfxLoaded++; 
-    if(gfxLoaded == 23) 
+    if(gfxLoaded == 24) 
     { 
         console.log("gfxloaded.");
         addTitleView(); 
@@ -211,18 +221,25 @@ function ghostHit()
 
 function showAlert() 
 { 
-    alertBg.x = centerX - 240; 
-    alertBg.y = -80;
-    stage.addChild(alertBg); 
+    createjs.Ticker.removeAllEventListeners(); 
+    stage.addChild(end); 
+    stage.addChild(restartBtn);
+    restartBtn.x = centerX-50;
+    restartBtn.y = centerY - 120;
+    restartBtn.addEventListener("click",refreshPage);
       
-    createjs.Tween.get(alertBg,{override:true}).to({y:centerY - 120}, 200).call(function() 
-    { 
-        createjs.Ticker.removeAllEventListeners(); 
-        var score = new createjs.Text(ghostsHit + '/' + totalGhosts, 'bold 30px Arial', '#EEE'); 
-        score.maxWidth = 1000;    //fix for Chrome 17 
-        score.x = centerX; 
-        score.y = centerY; 
-        stage.addChild(score); 
-        stage.update(); 
-    }); 
+    var score = new createjs.Text(ghostsHit + '/' + totalGhosts, '40px sans-serif', 'white'); 
+    score.maxWidth = 1000;    //fix for Chrome 17 
+    score.x = centerX-35; 
+    score.y = centerY+20; 
+    stage.addChild(score); 
+    stage.update(); 
+    // createjs.Tween.get(restartBtn,{override:true}).to({y:centerY - 120,x:centerX-50}, 200).call(function() 
+    // { 
+        
+    // }); 
 }
+
+function refreshPage(){
+    window.location.reload();
+} 
