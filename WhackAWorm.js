@@ -204,7 +204,7 @@ function showGhost()
         lastGhost.y += 42; 
         stage.update();
         
-        createjs.Tween.get(lastGhost, {override:true}).to({scaleY: 1, y: ghostsY[randomPos]-ghostCoorY[randomGhostPos]}, 50).wait(1000).call(function(){currentGhosts++; showGhost()});
+        createjs.Tween.get(lastGhost, {override:true}).to({scaleY: 1, y: ghostsY[randomPos]-ghostCoorY[randomGhostPos]}, 50).wait(2000).call(function(){currentGhosts++; showGhost()});
     }
 }
 
