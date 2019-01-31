@@ -21,16 +21,16 @@ var alertBg;
 /* Score */
 var score;
 /* ghosts */
-var ghostImgArr = new Array(19); 
+var ghostImgArr = new Array(18); 
 var i;
-for(i=0;i<19;i++){
+for(i=0;i<18;i++){
     ghostImgArr[i] = new Image();
 }
 ghostImgName = ['image/ghost1.png','image/ghost2.png','image/ghost3.png',
 'image/ghost4.png','image/ghost5.png','image/ghost6.png','image/ghost7.png',
 'image/ghost8.png','image/ghost9.png','image/ghost10.png','image/ghost11.png',
 'image/ghost12.png','image/ghost13.png','image/ghost14.png','image/ghost15.png',
-'image/ghost16.png','image/ghost17.png','image/ghost18.png','image/ghost19.png']
+'image/ghost16.png','image/ghost17.png','image/ghost18.png']
 var ghost; 
 var lastGhost;
 var randomPos;
@@ -43,9 +43,9 @@ var endBgImg = new Image();
 
 var ghostsX = [280, 620, 430, 675, 260, 530, 800]; 
 var ghostsY = [170, 150, 260, 315, 385, 450, 480];
-//                  0   1   2   3   4   5   6   7   8  9   10  11  12   13  14  15  16  17  18
-var ghostCoorX = [ 35, 20, 20, 30, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40,  0, 60, 30, 30];
-var ghostCoorY = [150, 35, 85, 90, 90,100, 80, 65,100, 95,120, 75,150, 80,200,  0, 90,340,105];
+//                  0   1   2   3   4   5   6   7   8  9   10  11  12   13  14  15  16  17
+var ghostCoorX = [ 35, 20, 20, 30, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40, 60, 30, 30];
+var ghostCoorY = [150, 35, 85, 90, 90,100, 80, 65,100, 95,120, 75,150, 80,200, 90,340,105];
 
 var centerX = 500; 
 var centerY = 230; 
@@ -89,7 +89,7 @@ function Main()
     endBgImg.name = 'end'; 
     endBgImg.onload = loadGfx; 
 
-    for(i=0;i<19;i++){
+    for(i=0;i<18;i++){
         ghostImgArr[i].src = ghostImgName[i];
         ghostImgArr[i].name = i;
         ghostImgArr[i].onload = loadGfx;
@@ -119,12 +119,12 @@ function loadGfx(e)
     if(e.target.name = 'playBtn'){playBtn = new createjs.Bitmap(playBtnImg);} 
     if(e.target.name = 'restartBtn'){restartBtn = new createjs.Bitmap(restartBtnImg);}
     if(e.target.name = 'end'){end = new createjs.Bitmap(endBgImg);}
-    for(i=0;i<19;i++){
+    for(i=0;i<18;i++){
         if(e.target.name = i){ghostBg = new createjs.Bitmap(ghostImgArr[i]);} 
     }
       
     gfxLoaded++; 
-    if(gfxLoaded == 24) 
+    if(gfxLoaded == 23) 
     { 
         console.log("gfxloaded.");
         addTitleView(); 
@@ -188,7 +188,7 @@ function showGhost()
             lastGhost = null; 
         }
         randomPos = Math.floor(Math.random() * 7);
-        randomGhostPos = Math.floor(Math.random() * 19);
+        randomGhostPos = Math.floor(Math.random() * 18);
         //randomGhostPos=18;
         var ghost = new createjs.Bitmap(ghostImgArr[randomGhostPos]); 
         
