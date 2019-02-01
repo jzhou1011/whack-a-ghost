@@ -44,8 +44,20 @@ var endBgImg = new Image();
 var ghostsX = [280, 620, 430, 675, 260, 530, 800]; 
 var ghostsY = [170, 150, 260, 315, 385, 450, 480];
 //                  0   1   2   3   4   5   6   7   8  9   10  11  12   13  14  15  16  17
-var ghostCoorX = [ 35, 20, 20, 30, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40, 60, 30, 30];
-var ghostCoorY = [150, 35, 85, 90, 90,100, 80, 65,100, 95,120, 75,150, 80,200, 90,340,105];
+var ghostCoorX = [[ 35, 20, 20, 33, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40, 60, 30, 30],
+                  [ 35, 20, 20, 33, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40, 60, 30, 30],
+                  [ 35, 20, 20, 33, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40, 60, 30, 30],
+                  [ 35, 17, 20, 27, 61, 30, 30, 35, 45, 30, 50, 20,120, 20, 40, 60, 30, 30],
+                  [ 35, 20, 20, 34, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40, 60, 30, 30],
+                  [ 35, 20, 20, 33, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40, 60, 30, 30],
+                  [ 35, 20, 20, 30, 65, 30, 30, 35, 45, 30, 50, 20,120, 20, 40, 60, 30, 30]];
+var ghostCoorY = [[150, 35, 85, 84, 82,100, 80, 65,100, 95,120, 75,150, 80,200, 90,340, 105],
+                  [150, 33, 85, 81, 80,100, 80, 65,100, 95,120, 75,150, 80,200, 90,340, 105],
+                  [150, 33, 85, 81, 80,100, 80, 65,100, 95,120, 75,150, 80,200, 90,340, 105],
+                  [150, 33, 85, 81, 79,100, 80, 65,100, 95,120, 75,150, 80,200, 90,340, 105],
+                  [150, 35, 85, 82, 81,100, 80, 65,100, 95,120, 75,150, 80,200, 90,340, 105],
+                  [150, 35, 85, 82, 81,100, 80, 65,100, 95,120, 75,150, 80,200, 90,340, 105],
+                  [150, 33, 85, 81, 79,100, 80, 65,100, 95,120, 75,150, 80,200, 90,340, 105]];
 
 var centerX = 500; 
 var centerY = 230; 
@@ -187,13 +199,22 @@ function showGhost()
             stage.update(); 
             lastGhost = null; 
         }
-        randomPos = Math.floor(Math.random() * 7);
+        //randomPos = Math.floor(Math.random() * 7);
+        randomPos = currentGhosts;
+        if(randomPos>6){
+            randomPos = randomPos-6;
+        }
         randomGhostPos = Math.floor(Math.random() * 18);
-        //randomGhostPos=18;
+        randomGhostPos=4;
+        // if(randomPos<2){
+        //     if(randomGhostPos>15){
+        //         randomGhostPos = Math.floor(Math.random() * 16);
+        //     }
+        // }
         var ghost = new createjs.Bitmap(ghostImgArr[randomGhostPos]); 
         
-        ghost.x = ghostsX[randomPos]-ghostCoorX[randomGhostPos]; 
-        ghost.y = ghostsY[randomPos]-ghostCoorY[randomGhostPos]; 
+        ghost.x = ghostsX[randomPos]-ghostCoorX[randomPos][randomGhostPos]; 
+        ghost.y = ghostsY[randomPos]-ghostCoorY[randomPos][randomGhostPos]; 
         stage.addChild(ghost); 
         ghost.addEventListener("click",ghostHit); 
         console.log(ghost.x);
@@ -204,7 +225,7 @@ function showGhost()
         lastGhost.y += 42; 
         stage.update();
         
-        createjs.Tween.get(lastGhost, {override:true}).to({scaleY: 1, y: ghostsY[randomPos]-ghostCoorY[randomGhostPos]}, 50).wait(1500).call(function(){currentGhosts++; showGhost()});
+        createjs.Tween.get(lastGhost, {override:true}).to({scaleY: 1, y: ghostsY[randomPos]-ghostCoorY[randomPos][randomGhostPos]}, 50).wait(1500).call(function(){currentGhosts++; showGhost()});
     }
 }
 
