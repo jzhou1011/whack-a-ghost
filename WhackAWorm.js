@@ -19,7 +19,7 @@ var gameBg;
 var alertBgImg = new Image(); 
 var alertBg;
 /* Score */
-var score;
+var score=0;
 /* ghosts */
 var ghostImgArr = new Array(18); 
 var i;
@@ -115,11 +115,11 @@ function Main()
     createjs.Ticker.framerate = 30; 
     createjs.Ticker.on("tick", stage);
 
-    score = new createjs.Text('0' + '/' + totalGhosts, 'bold 30px Arial', "black"); 
-    score.maxWidth = 1000;    //fix for Chrome 17 
-    score.x = 58; 
-    score.y = 21; 
-    stage.addChild(score);
+    // score = new createjs.Text('0' + '/' + totalGhosts, 'bold 30px Arial', "black"); 
+    // score.maxWidth = 1000;    //fix for Chrome 17 
+    // score.x = 58; 
+    // score.y = 21; 
+    // stage.addChild(score);
 
 }
 
